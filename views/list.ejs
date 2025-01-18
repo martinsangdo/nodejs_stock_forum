@@ -1,0 +1,22 @@
+<html>
+<head><title>List</title>
+<style>
+    img {height: 100px; margin:10px;}
+
+</style>
+</head>
+
+<body>
+    <table>
+        <% list.forEach(function(item) { %>
+        <tr>
+            <td><img src="<%= item.show.image.medium %>"/></td>
+            <td><%= item.show.name %></td>
+            <td><%= item.show.language %></td>
+            <td><%= item.show.status %></td>
+        </tr>
+        <% }); %>
+
+    </table>
+</body>
+</html>

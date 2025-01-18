@@ -1,0 +1,27 @@
+<html>
+<head>
+    <title>Movie list</title>
+    <style>
+        img {height:60;}
+    </style>
+</head>
+<body>
+    <table border="1" cellpadding="10">
+        <tr>
+            <td>ID</td>
+            <td>Name</td>
+            <td>Year</td>
+            <td>Image</td>
+        </tr>
+        <% for (var i = 0; i < list.length ; i++) { %>
+            <tr>
+                <td> <%= list[i]['_id'] %> </td>
+                <td> <%= list[i]['title'] %> </td>
+                <td> <%= list[i]['year'] %> </td>
+                <td> <img src="<%= list[i]['poster'] %>"/> </td>
+            </tr>
+        <% } %>
+    </table>
+
+</body>
+</html>
