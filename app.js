@@ -6,8 +6,7 @@ var logger = require('morgan');
 const mongoose = require('mongoose');
 
 var indexRouter = require('./api/index');
-var usersRouter = require('./api/users');
-var movieRouter = require('./api/movie');
+var movieRouter = require('./api/stock');
 
 var app = express();
 
@@ -22,7 +21,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost/stock_forum');
+mongoose.connect('mongodb://localhost:27017/stock_forum');
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', () => {
@@ -30,8 +29,7 @@ db.once('open', () => {
 });
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/movie', movieRouter);
+app.use('/stock', movieRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
