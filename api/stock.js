@@ -6,9 +6,9 @@ var Stock = require('../models/Stock');
 var Comment = require('../models/Comment');
 
 //http://localhost:3000/stock/chart
-//https://nodejs-stock-forum.onrender.com/stock/chart
+//https://nodejs-stock-forum.onrender.com/stock/chart?symbol=OKEPF
 router.get('/chart', function(req, res, next) {
-    res.render('chart');
+    res.render('chart', {symbol: req.query['symbol']});
 });
 
 /* GET list of stocks

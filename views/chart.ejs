@@ -4,13 +4,13 @@
 </head>
 
 <body>
-
+<input type="hidden" name="txt_hid_symbol" id="txt_hid_symbol" value="<%= symbol %>"/>
 <!-- TradingView Widget BEGIN -->
 <div class="tradingview-widget-container">
   <div class="tradingview-widget-container__widget"></div>
   <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
   {
-  "symbol": "OTC:GWSO",
+  "symbol": "OTC:<%= symbol %>",
   "width": "100%",
   "height": "480",
   "locale": "en",
