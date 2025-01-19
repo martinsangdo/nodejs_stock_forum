@@ -27,7 +27,7 @@ router.get('/list_pagination', function(req, res, next) {
     //
     var condition = {};
     if (req.query['symbol_list'] != null){
-        //remember to change skip & limit
+        //todo remember to change skip & limit from the app
         condition = {'symbol' : {'$in': req.query['symbol_list'].split(',')}};
     }
     //console.log(condition);
@@ -60,9 +60,9 @@ router.get('/list_pagination', function(req, res, next) {
                             var stock_details = [];
                             for (var stock of results['data']){
                                 stock_details.push({
-                                    symbol: stock['symbol'],
-                                    name: stock['name'],
-                                    comment_count: symbol_comment_count_map[stock['symbol']] != null?symbol_comment_count_map[stock['symbol']]:0
+                                    'symbol': stock['symbol'],
+                                    'name': stock['name'],
+                                    'comment_count': symbol_comment_count_map[stock['symbol']] != null?symbol_comment_count_map[stock['symbol']]:0
                                 });
                             }
                             final_response['data'] = stock_details;
