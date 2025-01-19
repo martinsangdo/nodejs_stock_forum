@@ -10,12 +10,30 @@ router.get('/chart', function(req, res, next) {
     res.render('chart');
 });
 
-/* GET list of stocks */
-router.get('/list', function(req, res, next) {
+/* GET list of stocks
+input:
+- skip, limit
+- symbol list
+
+return:
+- symbol
+- name
+- total comments
+- total likes
+*/
+router.get('/list_pagination', function(req, res, next) {
     var myInstance = new Stock();
+    //
+    var condition = {};
+    if (req.query['symbol_list'] != null){
+        //remember to change skip & limit
+        condition = {'symbol' : {'$in': req.query['symbol_list'].split(',')}};
+    }
+    console.log(condition);
+    //
     myInstance.search_by_condition(
-        {},
-        {skip:0, limit:10},
+        condition,
+        {skip: req.query['skip'], limit: req.query['limit']},
         'symbol name',
         {},
         function(results){
