@@ -169,7 +169,7 @@ router.post('/chatbot', function(req, res, next) {
     res.json({result: Constant.FAILED_CODE, message: 'Please input text'});
   } else {
     //todo generate new session, if not
-    console.log(req.body['session_id']);
+    //console.log(req.body['session_id']);
     //console.log(req.body['text']);
     //call API to generate text
     getGeminiText(req.body['text'].trim(), function(str_response){
@@ -179,7 +179,7 @@ router.post('/chatbot', function(req, res, next) {
       if (objGeminiResponse['candidates'] != null){
         res.json({result: Constant.OK_CODE, text: objGeminiResponse['candidates'][0]['content']['parts'][0]['text']});
       } else {
-        console.log(objGeminiResponse);
+        console.log('Failed Gemini', objGeminiResponse);
         //something wrong
         res.json({result: Constant.FAILED_CODE, message: 'Cannot get data from AI service'});
       }
@@ -188,8 +188,9 @@ router.post('/chatbot', function(req, res, next) {
 });
 //
 function getGeminiText(str_text, _callback){
-  var final_prompt = "You are an AI assistant specialized in providing information about Over-the-counter (OTC) stocks. A user will ask you questions. Provide helpful, informative, and accurate responses. Be cautious and avoid giving financial advice. Clearly state that you are an AI and cannot give financial advice.";
-  str_text = final_prompt + 'User: ' + str_text.trim();
+  //Perhaps add initial string like this will cause API exhausted?
+  //var final_prompt = "You are an AI assistant specialized in providing information about Over-the-counter (OTC) stocks. A user will ask you questions. Provide helpful, informative, and accurate responses. Be cautious and avoid giving financial advice. Clearly state that you are an AI and cannot give financial advice.";
+  //str_text = final_prompt + 'User: ' + str_text.trim();
   var gemini_url = process.env.GEMINI_URL;
   var header = {'Content-Type': 'application/json'};
   var body = {
