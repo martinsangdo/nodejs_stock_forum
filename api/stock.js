@@ -4,6 +4,7 @@ const request = require('request');
 const Constant = require('../common/constant');
 var Stock = require('../models/Stock');
 var Comment = require('../models/Comment');
+const https = require('https'); // For HTTPS requests (recommended)
 
 //http://localhost:3000/stock/chart
 //https://nodejs-stock-forum.onrender.com/stock/chart?symbol=OKEPF
@@ -162,6 +163,80 @@ router.get('/list_by_symbols', function(req, res, next) {
             }
     });
 });
+//generate text for chatbox
+router.post('/chatbot', function(req, res, next) {
+  if (req.body['text'] == null || req.body['text'] == ''){
+    res.json({result: Constant.FAILED_CODE, message: 'Please input text'});
+  } else {
+    //todo generate new session, if not
+    console.log(req.body['session_id']);
+    //console.log(req.body['text']);
+    //call API to generate text
+    getGeminiText(req.body['text'].trim(), function(str_response){
+      //parse response from Gemini
+      var objGeminiResponse = JSON.parse(str_response);
+      //console.log(objGeminiResponse);
+      if (objGeminiResponse['candidates'] != null){
+        res.json({result: Constant.OK_CODE, text: objGeminiResponse['candidates'][0]['content']['parts'][0]['text']});
+      } else {
+        console.log(objGeminiResponse);
+        //something wrong
+        res.json({result: Constant.FAILED_CODE, message: 'Cannot get data from AI service'});
+      }
+    });
+  }
+});
+//
+function getGeminiText(str_text, _callback){
+  var final_prompt = "You are an AI assistant specialized in providing information about Over-the-counter (OTC) stocks. A user will ask you questions. Provide helpful, informative, and accurate responses. Be cautious and avoid giving financial advice. Clearly state that you are an AI and cannot give financial advice.";
+  str_text = final_prompt + 'User: ' + str_text.trim();
+  var gemini_url = process.env.GEMINI_URL;
+  var header = {'Content-Type': 'application/json'};
+  var body = {
+    "contents": {
+        "parts": [
+            {
+                "text": str_text
+            }
+        ]
+    }
+  }
+  //send the request
+    const url = new URL(gemini_url); // Use URL class for easier parsing
+    const options = {
+      hostname: url.hostname,
+      path: gemini_url,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json' // Or appropriate content type
+      },
+    };
+    //console.log(options);
 
+    const req = https.request(options, (res) => {
+      let responseData = '';
+
+      res.on('data', (chunk) => {
+        responseData += chunk;
+      });
+
+      res.on('end', () => {
+        try {
+          const parsedData = JSON.parse(responseData); // Attempt to parse JSON
+          _callback(parsedData); // Resolve with parsed data
+        } catch (error) {
+          _callback(responseData); // Resolve with raw response if not JSON
+        }
+      });
+    });
+    req.on('error', function (e) {
+      console.log("Error : " + e.message);
+      _callback(e.message);
+    });
+
+    // write data to request body
+    req.write(JSON.stringify(body));
+    req.end();
+}
 
 module.exports = router;
