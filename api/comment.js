@@ -168,8 +168,9 @@ router.delete('/delete_comment', function(req, res, next) {
   var comment = new Comment();
   comment.deleteOne(
       {
-        uuid: req.body['uuid']
+        uuid: req.query['uuid']
       }, function(resp_del_comment){
+        // console.log(resp_del_comment);
         if (resp_del_comment.result == Constant.OK_CODE){
           //delete comments successfully
           //delete replies of comments
