@@ -8,7 +8,8 @@ var Constant = require("../common/constant.js");
 
 const stockSchema = new Schema({
 	symbol: String,
-	name: String
+	name: String,
+	is_otc: Boolean
 });
 
 const Stock = mongoose.model("tbl_stock",  stockSchema, "tbl_stock");

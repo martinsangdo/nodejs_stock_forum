@@ -1,2 +1,1 @@
-# week4_express
-Sample Express source for class WebProgramming 2
+# Backend of the app OTC Stock forum

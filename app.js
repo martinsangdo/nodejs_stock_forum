@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 var indexRouter = require('./api/index');
 var stockRouter = require('./api/stock');
 var commentRouter = require('./api/comment');
+var userRouter = require('./api/user');
 
 require('dotenv').config();
 
@@ -34,7 +35,7 @@ db.once('open', () => {
 app.use('/', indexRouter);
 app.use('/stock', stockRouter);
 app.use('/comment', commentRouter);
-
+app.use('/user', userRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
