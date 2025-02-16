@@ -6,8 +6,7 @@ var Stock = require('../models/Stock');
 var Comment = require('../models/Comment');
 const https = require('https'); // For HTTPS requests (recommended)
 
-//http://localhost:3000/stock/chart
-//https://nodejs-stock-forum.onrender.com/stock/chart?symbol=OKEPF
+//return iframe of chart
 router.get('/chart', function(req, res, next) {
     res.render('chart', {symbol: req.query['symbol']});
 });
